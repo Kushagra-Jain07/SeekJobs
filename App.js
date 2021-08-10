@@ -1,21 +1,26 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import JobsNavigator from "./navigation/JobsNavigator"
+import { Provider } from "react-redux"
+import { createStore, combineReducers, applyMiddleware } from "redux"
+import ReduxThunk from "redux-thunk"
+
+import AuthReducers from "./reducers/authReducer"
+import JobReducers from "./reducers/jobReducer"
+
+const rootReducer = combineReducers({
+  auth: AuthReducers,
+  job: JobReducers
+})
+
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk))
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      <JobsNavigator />
+    </Provider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
